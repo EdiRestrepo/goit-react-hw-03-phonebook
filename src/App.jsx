@@ -19,6 +19,31 @@ class App extends Component {
     // number: ''
   }
 
+      // Loading contacts from local storage
+      componentDidMount() {
+        const savedContacts = localStorage.getItem('contacts');
+        const parsedContacts = JSON.parse(savedContacts)
+
+        if (parsedContacts) {
+            this.setState({
+                contacts: parsedContacts,
+            })
+        }
+    }
+
+        // Saving contacts to local storage
+        componentDidUpdate(prevProps, prevState) {
+          const { contacts } = this.state;
+          
+          if (contacts !== prevState.contacts) {
+              localStorage.setItem('contacts', JSON.stringify(contacts))
+          }
+  
+          if (contacts.length === 0) {
+              localStorage.removeItem('contacts');
+          }
+      }
+
   formSubmitHandler = data => {
     this.repeatControl(data);
   };
